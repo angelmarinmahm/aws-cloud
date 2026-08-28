@@ -124,7 +124,3 @@ aws ec2 run-instances \
     --key-name vockey \
     --user-data install-app.sh \
     --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Web-Server-2}]'
-
-## Id de la instancia: i-0f3abe617a5f4b87a
-
-
