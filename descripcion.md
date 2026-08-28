@@ -99,3 +99,30 @@ aws ec2 associate-route-table \
     --route-table-id rtb-06aca178c20f0eeed
 
 #### Crear un grupo de seguridad para la VPC
+aws ec2 create-security-group \
+    --group-name Web-Security-Group \
+    --description "Enable HTTP access" \
+    --vpc-id vpc-088c6ac26ecb1ebb0 \
+    --tag-specifications 'ResourceType=security-group,Tags=[{Key=Name,Value=Web-Security-Group}]'
+
+#### Id del grupo de seguridad: sg-02de30ada32af6845
+
+#### Permitir el tráfico por el puerto 80
+aws ec2 authorize-security-group-ingress \
+    --group-id sg-02de30ada32af6845 \
+    --protocol tcp \
+    --port 80 \
+    --cidr 0.0.0.0/0
+
+#### Lanzar una instancia ec2
+aws ec2 run-instances \
+    --image-id ami-08b7b9fdd7a1edf3d \
+    --instance-type t3.micro \
+    --network-interfaces '{"DeviceIndex":0,"SubnetId":"subnet-006d4f5cc03fe0243","Groups":["sg-02de30ada32af6845"],"AssociatePublicIpAddress":true}' \
+    --key-name vockey \
+    --user-data install-app.sh \
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Web-Server-2}]'
+
+## Id de la instancia: i-0f3abe617a5f4b87a
+
+
